@@ -1,16 +1,38 @@
-# React + Vite
+# Printyx · Catálogo web
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Proyecto completo React + Vite. Incluye inicio, catálogo, filtros, ficha de producto, carrito y preparación del pedido para WhatsApp.
 
-Currently, two official plugins are available:
+## Instalación (Mac)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+1. Copia todos estos archivos dentro de la carpeta de tu repositorio `printyx` (conserva `.git`).
+2. Desde la carpeta del proyecto abre una terminal y ejecuta:
 
-## React Compiler
+```bash
+npm install
+npm run dev
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+3. Comprueba que funcione y ejecuta `npm run build`.
 
-## Expanding the ESLint configuration
+## Configuración
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- WhatsApp: `src/config.js`, coloca el número real en `WHATSAPP_NUMBER`, en formato `504` + 8 dígitos.
+- Productos: `src/products.js`; `price: null` pide cotización, `price: 250` muestra L 250.
+- Fotografías: agrégalas a `public/productos/` y define `image: '/productos/nombre.webp'`.
+- Instagram: `src/config.js`.
+
+Los productos son demostrativos y los precios quedan pendientes de cotización hasta que los introduzcas.
+
+## Publicación en Cloudflare Pages
+
+Framework: React (Vite) · Build: `npm run build` · Output: `dist` · Branch: `main`.
+
+Luego de probar la web:
+
+```bash
+git add .
+git commit -m "Restaurar proyecto completo Printyx"
+git push origin main
+```
+
+No subas `node_modules` ni `dist` a GitHub.
