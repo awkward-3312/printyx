@@ -38,3 +38,15 @@ git push origin main
 Al publicar, verifica que la subida a Cloudflare R2 y los enlaces del pedido por WhatsApp sigan funcionando.
 
 Las imágenes de decoración con temática de abejitas son *ejemplos referenciales*, no fotos de trabajos realizados.
+
+
+## V11.1 — Ajuste de visualización
+Se ajustó el CSS de fichas, tarjetas y miniaturas para ver cada mockup completo y evitar el recorte por `object-fit: cover`. No se modificaron las imágenes, los productos ni la lógica de WhatsApp y R2.
+
+
+## V11.2 — Modal equilibrado
+La imagen se centra en una columna de fondo crema que ocupa la altura del modal; el formulario tiene scroll independiente en escritorio. En móvil la ficha permanece apilada. Sin cambios en carrito, R2 ni WhatsApp.
+
+
+### V11.3
+Corregida la alineación vertical de los mockups en las fichas y reiniciado el desplazamiento del formulario al cambiar de producto. No modifica WhatsApp, R2 ni el catálogo.

@@ -103,3 +103,115 @@ h1,h2,h3{font-family:'Montserrat',sans-serif;font-weight:800;letter-spacing:-.04
 /* Printyx V7 — miniaturas de mockups en carrito */
 .cart-thumb{overflow:hidden}
 .cart-thumb img{display:block;width:100%;height:100%;object-fit:cover}
+
+
+/* Printyx V11.1 — mostrar mockups completos sin recortarlos */
+.product-visual img,
+.cart-thumb img {
+  object-fit: contain;
+  object-position: center;
+}
+.product-visual:has(img) { background: #f7f5f0; }
+.product-visual:has(img)::before { display: none; }
+.modal-product-grid { align-items: start; }
+.modal-product-grid .product-visual.large {
+  height: auto;
+  min-height: 0;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  align-self: start;
+  overflow: hidden;
+  background: #f7f5f0;
+}
+.modal-product-grid .product-visual.large img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+@media (max-width: 680px) {
+  .modal-product-grid .product-visual.large {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 1 / 1;
+  }
+}
+
+
+/* Printyx V11.2 — ficha equilibrada y fotografía visible completa */
+@media (min-width: 681px) {
+  .product-modal {
+    overflow: hidden;
+    height: min(90vh, 760px);
+    max-height: 90vh;
+  }
+  .product-modal .modal-product-grid {
+    height: 100%;
+    min-height: 0;
+    align-items: stretch;
+    grid-template-columns: 1fr 1fr;
+  }
+  .product-modal .modal-media-panel {
+    min-width: 0;
+    min-height: 0;
+    background: #f7f5f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .product-modal .modal-media-panel .product-visual.large {
+    flex: 0 1 auto;
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 1 / 1;
+    height: auto;
+    min-height: 0;
+    background: transparent;
+    overflow: hidden;
+  }
+  .product-modal .modal-details {
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+  }
+}
+@media (max-width: 680px) {
+  .product-modal { overflow-y: auto; }
+  .product-modal .modal-media-panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f7f5f0;
+    padding: 0;
+  }
+  .product-modal .modal-media-panel .product-visual.large {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 1 / 1;
+  }
+}
+
+
+/* Printyx V11.3: centrar realmente el mockup y mantener visible el título. */
+@media (min-width: 681px) {
+  .product-modal .modal-media-panel .product-visual.large {
+    align-self: center; /* la regla antigua lo colocaba arriba */
+    flex: none;
+    width: min(100%, 410px);
+    aspect-ratio: 1 / 1;
+  }
+  .product-modal .modal-details {
+    scroll-behavior: auto;
+    overflow-anchor: none;
+    padding-top: 46px;
+  }
+  .product-modal .modal-product-grid { align-items: stretch; }
+}
+@media (max-width: 680px) {
+  .product-modal .modal-details { overflow-anchor: none; }
+}
