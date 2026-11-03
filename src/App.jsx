@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState, useRef } from 'react';
 import {
   ArrowRight,
   Check,
-  Instagram,
   Menu,
   Minus,
   Plus,
@@ -24,14 +23,9 @@ import {
   getProductDetails,
   validateDetails,
 } from './ProductCustomizationFields.jsx';
-import {
-  WHATSAPP_NUMBER,
-  INSTAGRAM_URL,
-  FACEBOOK_URL,
-  TIKTOK_URL,
-  DELIVERY_TEXT,
-} from './config';
+import { WHATSAPP_NUMBER, DELIVERY_TEXT } from './config';
 import galleryImages from './trabajos.generated.json';
+import { SocialLinks } from './SocialLinks.jsx';
 
 const money = (n) =>
   new Intl.NumberFormat('es-HN', { style: 'currency', currency: 'HNL' }).format(
@@ -928,14 +922,7 @@ function App() {
                 Cuéntanos qué imaginas. Te ayudamos a convertirlo en un producto
                 hecho a tu medida.
               </p>
-              <a
-                className="instagram-link"
-                href={INSTAGRAM_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Instagram size={18} /> @printyxhn
-              </a>
+              <SocialLinks />
             </div>
             <button className="primary-button" onClick={openCart}>
               Ver mi carrito <ShoppingBag size={18} />
@@ -954,19 +941,13 @@ function App() {
               Honduras.
             </p>
           </div>
-          <div className="footer-links">
-            <a href="#catalogo">Catálogo</a>
-            <a href="#como-comprar">Cómo comprar</a>
-            <a href="#politicas">Políticas</a>
-            <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">
-              Instagram
-            </a>
-            <a href={FACEBOOK_URL} target="_blank" rel="noopener noreferrer">
-              Facebook
-            </a>
-            <a href={TIKTOK_URL} target="_blank" rel="noopener noreferrer">
-              TikTok
-            </a>
+          <div className="footer-navigation">
+            <div className="footer-links">
+              <a href="#catalogo">Catálogo</a>
+              <a href="#como-comprar">Cómo comprar</a>
+              <a href="#politicas">Políticas</a>
+            </div>
+            <SocialLinks variant="footer" />
           </div>
           <small>
             © {new Date().getFullYear()} Printyx. Todos los derechos

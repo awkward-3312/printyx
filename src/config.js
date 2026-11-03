@@ -1,8 +1,7 @@
 // Número de WhatsApp que figura en la guía de marca. Verifica que esté vigente antes de publicar.
 export const WHATSAPP_NUMBER = '50498857431';
 export const INSTAGRAM_URL = 'https://www.instagram.com/printyxhn/';
-export const FACEBOOK_URL =
-  'https://www.facebook.com/profile.php?id=61595589443365';
+export const FACEBOOK_URL = 'https://www.facebook.com/profile.php?id=61595589443365';
 export const TIKTOK_URL = 'https://www.tiktok.com/@printyxhn';
 export const DELIVERY_TEXT = 'Envíos a todo Honduras';
 

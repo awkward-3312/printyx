@@ -543,16 +543,54 @@ h2 em {
   max-width: 460px;
   line-height: 1.7;
 }
-.instagram-link {
+.social-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  color: var(--tinta, #14213d);
+}
+.social-link {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
+  gap: 8px;
+  min-height: 44px;
   font-weight: 700;
   font-size: 13px;
+  white-space: nowrap;
+  border-radius: 4px;
 }
-.instagram-link:hover {
-  color: #008dae;
+.social-link svg {
+  flex-shrink: 0;
 }
+.social-link:hover,
+.social-link:focus-visible {
+  text-decoration: underline;
+  text-decoration-color: var(--cian, #00a6d6);
+  text-underline-offset: 4px;
+}
+.social-links .social-link:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+.social-links--footer {
+  color: #ffffff;
+}
+.social-links--footer .social-link:hover {
+  color: var(--cian-suave, #d9f2fa);
+}
+.footer-navigation {
+  min-width: 0;
+  max-width: 100%;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 footer {
   background: #14213d;
   color: #fff;
@@ -574,6 +612,7 @@ footer {
 }
 .footer-links {
   display: flex;
+  flex-wrap: wrap;
   gap: 22px;
   font-size: 12px;
 }
@@ -981,8 +1020,10 @@ footer {
   .footer-inner {
     display: block;
   }
-  .footer-links {
+  .footer-navigation {
     margin: 23px 0;
+  }
+  .footer-links {
     flex-wrap: wrap;
   }
   .modal-product-grid {
