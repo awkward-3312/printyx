@@ -1,0 +1,182 @@
+[
+  {
+    "archivo": "public/productos/mameluco.webp",
+    "dimensiones": [
+      1024,
+      1024
+    ],
+    "producto": "mameluco",
+    "referenciado_en_catalogo": true
+  },
+  {
+    "archivo": "public/productos/jarra.webp",
+    "dimensiones": [
+      1024,
+      1024
+    ],
+    "producto": "jarra",
+    "referenciado_en_catalogo": true
+  },
+  {
+    "archivo": "public/productos/llavero.webp",
+    "dimensiones": [
+      1024,
+      1024
+    ],
+    "producto": "llavero",
+    "referenciado_en_catalogo": true
+  },
+  {
+    "archivo": "public/productos/rompecabezas.webp",
+    "dimensiones": [
+      1024,
+      1024
+    ],
+    "producto": "rompecabezas",
+    "referenciado_en_catalogo": true
+  },
+  {
+    "archivo": "public/productos/reloj-led.webp",
+    "dimensiones": [
+      1024,
+      1024
+    ],
+    "producto": "reloj-led",
+    "referenciado_en_catalogo": true
+  },
+  {
+    "archivo": "public/productos/etiquetas.webp",
+    "dimensiones": [
+      1024,
+      1024
+    ],
+    "producto": "etiquetas",
+    "referenciado_en_catalogo": true
+  },
+  {
+    "archivo": "public/productos/tarjetas.webp",
+    "dimensiones": [
+      1024,
+      1024
+    ],
+    "producto": "tarjetas",
+    "referenciado_en_catalogo": true
+  },
+  {
+    "archivo": "public/productos/brochures.webp",
+    "dimensiones": [
+      1024,
+      1024
+    ],
+    "producto": "brochures",
+    "referenciado_en_catalogo": true
+  },
+  {
+    "archivo": "public/productos/calendarios.webp",
+    "dimensiones": [
+      1024,
+      1024
+    ],
+    "producto": "calendarios",
+    "referenciado_en_catalogo": true
+  },
+  {
+    "archivo": "public/productos/lanyards.webp",
+    "dimensiones": [
+      1024,
+      1024
+    ],
+    "producto": "lanyards",
+    "referenciado_en_catalogo": true
+  },
+  {
+    "archivo": "public/productos/carnes.webp",
+    "dimensiones": [
+      1024,
+      1024
+    ],
+    "producto": "carnes",
+    "referenciado_en_catalogo": true
+  },
+  {
+    "archivo": "public/productos/botones.webp",
+    "dimensiones": [
+      1024,
+      1024
+    ],
+    "producto": "botones",
+    "referenciado_en_catalogo": true
+  },
+  {
+    "archivo": "public/productos/uniformes.webp",
+    "dimensiones": [
+      1024,
+      1024
+    ],
+    "producto": "uniformes",
+    "referenciado_en_catalogo": true
+  },
+  {
+    "archivo": "public/productos/piniatas.webp",
+    "dimensiones": [
+      1024,
+      1024
+    ],
+    "producto": "piniatas",
+    "referenciado_en_catalogo": true
+  },
+  {
+    "archivo": "public/productos/centros-mesa.webp",
+    "dimensiones": [
+      1024,
+      1024
+    ],
+    "producto": "centros-mesa",
+    "referenciado_en_catalogo": true
+  },
+  {
+    "archivo": "public/productos/cajas-fiesta.webp",
+    "dimensiones": [
+      1024,
+      1024
+    ],
+    "producto": "cajas-fiesta",
+    "referenciado_en_catalogo": true
+  },
+  {
+    "archivo": "public/productos/bolsitas-fiesta.webp",
+    "dimensiones": [
+      1024,
+      1024
+    ],
+    "producto": "bolsitas-fiesta",
+    "referenciado_en_catalogo": false
+  },
+  {
+    "archivo": "public/productos/figuras-pvc.webp",
+    "dimensiones": [
+      1024,
+      1024
+    ],
+    "producto": "figuras-pvc",
+    "referenciado_en_catalogo": true
+  },
+  {
+    "archivo": "public/productos/flores-eternas.webp",
+    "dimensiones": [
+      1024,
+      1024
+    ],
+    "producto": "flores-eternas",
+    "referenciado_en_catalogo": true
+  },
+  {
+    "archivo": "public/productos/arreglo-dulces.webp",
+    "dimensiones": [
+      1024,
+      1024
+    ],
+    "producto": "arreglo-dulces",
+    "referenciado_en_catalogo": true
+  }
+]

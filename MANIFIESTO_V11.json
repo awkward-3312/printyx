@@ -1,0 +1,25 @@
+{
+  "version": "V11",
+  "base": "V10",
+  "nuevas_imagenes": 13,
+  "productos_totales": 32,
+  "actualizaciones": [
+    "arreglo-dulces.webp",
+    "botones.webp",
+    "brochures.webp",
+    "cajas-fiesta.webp",
+    "calendarios.webp",
+    "centros-mesa.webp",
+    "etiquetas.webp",
+    "figuras-pvc.webp",
+    "flores-eternas.webp",
+    "lanyards.webp",
+    "piniatas.webp",
+    "tarjetas.webp",
+    "uniformes.webp"
+  ],
+  "pendiente_cambio_visual": [
+    "carnes.webp"
+  ],
+  "integraciones_modificadas": false
+}
