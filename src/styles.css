@@ -307,3 +307,38 @@ h1,h2,h3{font-family:'Montserrat',sans-serif;font-weight:800;letter-spacing:-.04
 @media(max-width:920px){.gallery-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:680px){.gallery-section{padding:48px 0}.gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.gallery-tile span{font-size:11px;padding:11px}.gallery-close{right:14px;top:12px}.review-content h3{font-size:21px}}
 @media(max-width:380px){.gallery-grid{grid-template-columns:1fr 1fr}}
+
+/* Printyx V14: galería real, confirmaciones, accesibilidad y CTA móvil. */
+.product-photo-thumbs{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;width:100%;padding:10px 12px 0}
+.product-photo-thumbs button{width:61px;height:61px;flex:0 0 61px;display:grid;place-items:center;border:2px solid transparent;border-radius:10px;background:#fff;padding:3px;overflow:hidden;transition:border-color .15s}
+.product-photo-thumbs button.active,.product-photo-thumbs button[aria-pressed=true]{border-color:#14213d}
+.product-photo-thumbs img{width:100%;height:100%;border-radius:6px;object-fit:cover}
+.product-gallery-hint{color:#5b6478;font-size:11px;line-height:1.4;text-align:center;margin:6px 15px 0}
+.product-modal .modal-media-panel{display:flex;flex-direction:column;justify-content:center;align-items:center;min-width:0;overflow-y:auto;overscroll-behavior:contain}
+.product-modal .zoom-trigger{height:auto;min-height:0;flex:0 0 auto}
+.product-modal .modal-media-panel .product-visual.large img{object-fit:contain}
+.mobile-product-cta{display:none}
+.toast{display:flex;align-items:center;gap:10px;max-width:min(420px,calc(100vw - 24px));text-align:left;line-height:1.45;z-index:1600}
+.toast svg{flex-shrink:0;color:#79e2ff}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex="-1"]:focus-visible{outline:3px solid #007b9e;outline-offset:3px}
+button:disabled{cursor:not-allowed;opacity:.78}
+.variant-field select,.variant-field input,.variant-field textarea{min-height:44px}
+.product-photo-thumbs button,.close-button,.mobile-menu,.cart-icon,.mini-button{touch-action:manipulation}
+@media (max-width:680px){
+  .product-modal{max-height:calc(100dvh - 16px);height:auto;overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column}
+  .product-modal .modal-product-grid{height:auto;min-height:0;flex:1 0 auto;display:block}
+  .product-modal .modal-media-panel{overflow:visible;padding:8px 8px 0}
+  .product-modal .zoom-trigger{height:auto}
+  .product-modal .modal-media-panel .product-visual.large{max-height:220px;aspect-ratio:1;max-width:220px;width:100%;height:auto}
+  .product-modal .modal-details{padding:18px 18px 26px}
+  .product-modal .desktop-add-to-cart{display:none}
+  .mobile-product-cta{display:block;position:sticky;bottom:0;flex-shrink:0;z-index:8;background:#fff;border-top:1px solid #e3e6e9;padding:10px 16px max(10px,env(safe-area-inset-bottom));box-shadow:0 -7px 18px #14213d12}
+  .mobile-product-cta .primary-button{min-height:48px}
+  .product-photo-thumbs button{width:50px;height:50px;flex-basis:50px}
+  .product-photo-thumbs{gap:7px;padding-top:5px}
+  .product-gallery-hint{font-size:10px;margin-top:4px}
+  .toast{bottom:max(78px,calc(env(safe-area-inset-bottom) + 78px));font-size:12px}
+  .product-modal>.close-button{position:sticky;right:10px;top:10px;align-self:flex-end;margin-bottom:-42px;z-index:9}
+  .search-box input,.occasion-filter select,.variant-field select,.variant-field input,.variant-field textarea{font-size:16px}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}

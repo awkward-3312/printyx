@@ -60,3 +60,14 @@ En Cloudflare Pages, para Vite: comando `npm run build` y directorio de salida `
 - Estilos responsivos: `src/styles.css`.
 
 **Nota de privacidad:** retirar un adjunto del carrito no borra inmediatamente el archivo ya cargado a R2; el archivo dejará de ser parte del pedido, pero el ciclo de vida de R2 sigue eliminándolo al final de su período de retención. No se realizan cobros online ni seguimiento de pedidos.
+
+
+## Actualización V13
+
+Lee `CAMBIOS_V13.md`. Para agregar fotos de trabajos reales, colócalas en `public/trabajos/`; el catálogo las incorporará al iniciar o compilar el proyecto. No agregues manualmente nombres en el código.
+
+## Printyx V14
+
+Consulta [CAMBIOS_V14.md](CAMBIOS_V14.md) para el botón fijo en móvil, las confirmaciones, accesibilidad y cómo asociar fotos reales a productos.
+
+Para asociar una foto a una ficha, colócala en `public/trabajos/` con el prefijo de ID exacto: `camisa-01.jpg`, `taza-01.webp`, `tote-bag-01.jpg` o `centros-mesa-01.jpg`. Al ejecutar `npm run dev` o `npm run build`, la galería de la ficha se actualiza automáticamente. El mockup sigue siendo la imagen principal.
