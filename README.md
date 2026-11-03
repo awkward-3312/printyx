@@ -1,38 +1,15 @@
-# Printyx · Catálogo web
+# Printyx V5 — Archivos de referencia para WhatsApp
 
-Proyecto completo React + Vite. Incluye inicio, catálogo, filtros, ficha de producto, carrito y preparación del pedido para WhatsApp.
+Tienda React + Vite con catálogo, personalización y carrito. Conserva las funciones de V4 y agrega selector local de archivos (JPG, PNG, WEBP, SVG, PDF; máximo 5 por selección, 15 MB por archivo).
 
-## Instalación (Mac)
+**Importante:** Los archivos NO se cargan ni se envían automáticamente a WhatsApp. Los nombres se agregan al pedido, y el cliente debe adjuntar los archivos manualmente cuando se abra WhatsApp. No hay almacenamiento de archivos ni base de datos.
 
-1. Copia todos estos archivos dentro de la carpeta de tu repositorio `printyx` (conserva `.git`).
-2. Desde la carpeta del proyecto abre una terminal y ejecuta:
+## Instalación
 
-```bash
-npm install
-npm run dev
-```
+1. Haz una copia de tu proyecto actual y conserva su carpeta `.git`.
+2. Copia los archivos de este ZIP dentro del repositorio local `printyx`, fusionando y reemplazando los archivos anteriores. No elimines `.git`.
+3. En la terminal: `npm install` y `npm run dev`.
+4. Prueba la selección de imágenes en una ficha; agrega al carrito; comprueba el texto del pedido en WhatsApp.
+5. Ejecuta `npm run build` antes de `git add .`, `git commit -m "Agregar referencias de diseño a Printyx"` y `git push origin main`.
 
-3. Comprueba que funcione y ejecuta `npm run build`.
-
-## Configuración
-
-- WhatsApp: `src/config.js`, coloca el número real en `WHATSAPP_NUMBER`, en formato `504` + 8 dígitos.
-- Productos: `src/products.js`; `price: null` pide cotización, `price: 250` muestra L 250.
-- Fotografías: agrégalas a `public/productos/` y define `image: '/productos/nombre.webp'`.
-- Instagram: `src/config.js`.
-
-Los productos son demostrativos y los precios quedan pendientes de cotización hasta que los introduzcas.
-
-## Publicación en Cloudflare Pages
-
-Framework: React (Vite) · Build: `npm run build` · Output: `dist` · Branch: `main`.
-
-Luego de probar la web:
-
-```bash
-git add .
-git commit -m "Restaurar proyecto completo Printyx"
-git push origin main
-```
-
-No subas `node_modules` ni `dist` a GitHub.
+Edita productos en `src/products.js`. El número de WhatsApp está en `src/config.js`.
