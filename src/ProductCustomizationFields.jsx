@@ -6,6 +6,10 @@ const printingIds = new Set(['stickers','etiquetas','tarjetas','brochures','cale
 const clothingIds = new Set(['camisa','gorra','bordado','mameluco','boxer','uniformes','mochila']);
 const photoIds = new Set(['taza','jarra','termo','cojin','mousepad','llavero','rompecabezas','reloj-led']);
 
+const paperIds = new Set(['tarjetas','brochures','calendarios','etiquetas']);
+const finishingIds = new Set(['stickers','tarjetas','brochures','etiquetas']);
+const giftIds = new Set(['flores-eternas','arreglo-dulces']);
+const sizeIds = new Set(['stickers','etiquetas','tarjetas','brochures','botones','lanyards','carnes']);
 function isMeasured(product){return measureIds.has(product.id);}
 export function makeInitialDetails(product){return {
   designStatus:'Tengo el diseño listo',
@@ -15,6 +19,10 @@ export function makeInitialDetails(product){return {
   occasion:'',
   dueDate:'',
   extraNotes:'',
+  material:'Por confirmar', finish:'Por confirmar', pieceSize:'',
+  eventAge:'', eventName:'', eventQuantity:'',
+  eventTheme:'', giftMessage:'', giftPalette:'',
+  placement:'Al frente', sizeNotes:'',
 };}
 
 export function validateDetails(product,values){
@@ -30,6 +38,17 @@ export function getProductDetails(product,values){
   const result=[];
   if(isMeasured(product)) result.push(['Ancho',`${values.width} pulgadas`],['Alto',`${values.height} pulgadas`]);
   if(printingIds.has(product.id)) result.push(['Impresión',values.printingSides]);
+  if(paperIds.has(product.id)) result.push(['Material o papel',values.material]);
+  if(finishingIds.has(product.id)) result.push(['Acabado',values.finish]);
+  if(sizeIds.has(product.id) && values.pieceSize?.trim()) result.push(['Medida o formato',values.pieceSize.trim()]);
+  if(clothingIds.has(product.id)) result.push(['Ubicación del diseño',values.placement]);
+  if(clothingIds.has(product.id) && values.sizeNotes?.trim()) result.push(['Prenda o medidas especiales',values.sizeNotes.trim()]);
+  if(occasionIds.has(product.id) && values.eventName?.trim()) result.push(['Nombre para decorar',values.eventName.trim()]);
+  if(occasionIds.has(product.id) && values.eventAge?.trim()) result.push(['Edad o número',values.eventAge.trim()]);
+  if(occasionIds.has(product.id) && values.eventQuantity?.trim()) result.push(['Cantidad de piezas del evento',values.eventQuantity.trim()]);
+  if(occasionIds.has(product.id) && values.eventTheme?.trim()) result.push(['Colores de la temática',values.eventTheme.trim()]);
+  if(giftIds.has(product.id) && values.giftMessage?.trim()) result.push(['Mensaje de regalo',values.giftMessage.trim()]);
+  if(giftIds.has(product.id) && values.giftPalette?.trim()) result.push(['Colores preferidos',values.giftPalette.trim()]);
   if(occasionIds.has(product.id)&&values.occasion.trim()) result.push(['Ocasión o temática',values.occasion.trim()]);
   result.push(['Diseño',values.designStatus]);
   if(values.designNotes.trim()) result.push(['Detalles del diseño',values.designNotes.trim()]);
@@ -62,6 +81,13 @@ export function ProductCustomizationFields({product,details,onChange,referenceFi
     </div>}
     {printingIds.has(product.id)&&<label className="variant-field"><span>Impresión</span><select value={details.printingSides} onChange={e=>update('printingSides',e.target.value)}><option>Una cara</option><option>Ambas caras</option><option>Por confirmar</option></select></label>}
     {occasionIds.has(product.id)&&<label className="variant-field"><span>Ocasión o temática (opcional)</span><input type="text" maxLength="120" placeholder="Ej. Cumpleaños, graduación..." value={details.occasion} onChange={e=>update('occasion',e.target.value)}/></label>}
+    {paperIds.has(product.id)&&<label className="variant-field"><span>Papel o material</span><select value={details.material} onChange={e=>update('material',e.target.value)}>{['Por confirmar','Papel bond','Couché','Cartulina','Adhesivo','Otro'].map(x=><option key={x}>{x}</option>)}</select></label>}
+    {finishingIds.has(product.id)&&<label className="variant-field"><span>Acabado</span><select value={details.finish} onChange={e=>update('finish',e.target.value)}>{['Por confirmar','Mate','Brillante','Laminado','Troquelado','Otro'].map(x=><option key={x}>{x}</option>)}</select></label>}
+    {sizeIds.has(product.id)&&<label className="variant-field"><span>Medida o formato (opcional)</span><input maxLength="100" value={details.pieceSize||''} onChange={e=>update('pieceSize',e.target.value)} placeholder="Ej. 9 × 5 cm; 3 pulgadas" /></label>}
+    {clothingIds.has(product.id)&&<><label className="variant-field"><span>Ubicación del diseño</span><select value={details.placement} onChange={e=>update('placement',e.target.value)}>{['Al frente','En la espalda','Frente y espalda','Bordado en pecho','Otro / por confirmar'].map(x=><option key={x}>{x}</option>)}</select></label><label className="variant-field"><span>Prenda o medidas especiales (opcional)</span><input maxLength="120" value={details.sizeNotes||''} onChange={e=>update('sizeNotes',e.target.value)} placeholder="Ej. Polo blanco, bordado pequeño"/></label></>}
+    {occasionIds.has(product.id)&&<><div className="event-fields"><label className="variant-field"><span>Nombre del festejado (opcional)</span><input maxLength="70" value={details.eventName||''} onChange={e=>update('eventName',e.target.value)}/></label><label className="variant-field"><span>Edad o número (opcional)</span><input maxLength="15" value={details.eventAge||''} onChange={e=>update('eventAge',e.target.value)} placeholder="Ej. 5"/></label></div><label className="variant-field"><span>Colores de la temática (opcional)</span><input maxLength="90" value={details.eventTheme||''} onChange={e=>update('eventTheme',e.target.value)} placeholder="Ej. Amarillo, blanco y negro"/></label><label className="variant-field"><span>Cantidad de piezas para el evento (opcional)</span><input type="number" min="1" max="10000" value={details.eventQuantity||''} onChange={e=>update('eventQuantity',e.target.value)}/></label></>}
+    {giftIds.has(product.id)&&<><label className="variant-field"><span>Colores del arreglo (opcional)</span><input maxLength="90" value={details.giftPalette||''} onChange={e=>update('giftPalette',e.target.value)} placeholder="Ej. Rosa pastel y blanco"/></label><label className="variant-field"><span>Dedicatoria (opcional)</span><textarea rows="2" maxLength="180" value={details.giftMessage||''} onChange={e=>update('giftMessage',e.target.value)}/></label></>}
+
     <label className="variant-field"><span>¿Ya tienes el diseño?</span><select value={details.designStatus} onChange={e=>update('designStatus',e.target.value)}><option>Tengo el diseño listo</option><option>Quiero que Printyx me lo diseñe</option><option>Necesito asesoría para mi idea</option></select></label>
     <label className="variant-field"><span>{details.designStatus==='Tengo el diseño listo'?'¿Qué diseño deseas utilizar? (opcional)':'Describe tu idea (opcional)'}</span><textarea rows="3" maxLength="450" placeholder={suggested} value={details.designNotes} onChange={e=>update('designNotes',e.target.value)}/></label>
     {details.designStatus==='Tengo el diseño listo'&&<p className="field-hint">Puedes adjuntar el diseño más abajo para compartirlo mediante un enlace protegido.</p>}

@@ -215,3 +215,95 @@ h1,h2,h3{font-family:'Montserrat',sans-serif;font-weight:800;letter-spacing:-.04
 @media (max-width: 680px) {
   .product-modal .modal-details { overflow-anchor: none; }
 }
+
+/* Printyx V12 — fichas, filtros, carrito y vista móvil */
+.occasion-filter{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px;color:#5b6478;font-size:12px}
+.occasion-filter label{font-weight:700}
+.occasion-filter select{border:1px solid #dce1e6;background:#fff;border-radius:10px;padding:11px 35px 11px 12px;color:#14213d;font-size:13px;max-width:100%}
+.occasion-filter button{border:0;background:transparent;color:#006f91;text-decoration:underline;font-size:12px;padding:10px;font-weight:700}
+.policies-section{padding:70px 0 75px}
+.policies-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}
+.policies-grid article{border:1px solid #e7eaed;border-radius:14px;padding:22px 18px;background:#fff}
+.policies-grid h3{font-size:15px;color:#14213d;margin-bottom:10px}
+.policies-grid p,.policies-note{font-size:12px;line-height:1.75;color:#657080;margin:0}
+.policies-note{margin-top:17px}
+.event-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.product-modal .modal-media-panel{position:relative}
+.product-modal .zoom-trigger{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:transparent;border:0;width:100%;height:100%;min-height:0;padding:0;cursor:zoom-in}
+.product-modal .zoom-trigger .product-visual.large{flex:none}
+.zoom-trigger>span{color:#5b6478;font-size:12px;display:flex;align-items:center;gap:7px}
+.image-lightbox{position:fixed;inset:0;z-index:90;background:#101522e8;display:flex;align-items:center;justify-content:center;padding:60px 20px 20px}
+.image-lightbox img{display:block;max-width:min(90vw,900px);max-height:80vh;object-fit:contain;background:#f7f5f0;border-radius:12px}
+.image-lightbox .close-button{position:absolute;top:18px;right:20px}
+.cancel-edit{margin-top:12px}
+.cart-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:10px}
+.edit-cart-item{display:inline-flex;align-items:center;gap:6px;background:#eaf8fb;color:#14213d;border:0;border-radius:8px;padding:9px 10px;font-weight:800;font-size:11px}
+.retained-files{border:1px solid #c8e9ed;background:#f2fbfc;padding:13px;border-radius:10px;margin:16px 0;font-size:12px}
+.retained-files>strong{display:block;margin-bottom:9px}
+.retained-files>div{display:flex;align-items:center;justify-content:space-between;gap:9px;padding:6px 0;border-bottom:1px solid #dcecef}
+.retained-files a{overflow-wrap:anywhere;color:#006f91;text-decoration:underline}
+.retained-files button{border:0;background:transparent;color:#a94436;font-size:11px;font-weight:800}
+.retained-files p{color:#5b6478;font-size:11px;margin:10px 0 0}
+.product-modal .close-button{box-shadow:0 2px 10px #14213d16}
+@media(min-width:681px){
+ .product-modal{width:min(940px,calc(100vw - 36px));max-width:940px;height:min(88vh,760px)}
+ .product-modal .modal-product-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+ .product-modal .modal-media-panel{padding:22px;background:#f7f5f0}
+ .product-modal .modal-media-panel .product-visual.large{width:min(100%,420px);max-width:420px;aspect-ratio:1;height:auto}
+ .product-modal .modal-details{padding:48px 30px 32px;scrollbar-gutter:stable}
+}
+@media(max-width:900px){.policies-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:680px){
+ .overlay{padding:8px;align-items:center}
+ .product-modal{width:100%;max-height:calc(100dvh - 16px);height:auto;overflow-y:auto;overscroll-behavior:contain;border-radius:15px}
+ .product-modal .modal-product-grid{display:block;height:auto}
+ .product-modal .modal-media-panel{padding:0}
+ .product-modal .zoom-trigger{gap:4px}
+ .product-modal .modal-media-panel .product-visual.large{width:100%;max-width:100%;aspect-ratio:1;height:auto;max-height:min(60vw,270px);min-height:0}
+ .product-modal .modal-media-panel .product-visual.large img{height:100%;object-fit:contain}
+ .product-modal .modal-details{padding:24px 18px 28px;overflow:visible}
+ .product-modal .modal-details h2{font-size:24px;padding-right:38px}
+ .product-modal>.close-button{position:sticky;float:right;right:10px;top:10px;margin-bottom:-42px;z-index:6}
+ .product-modal .zoom-trigger>span{padding-bottom:9px}
+ .product-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+ .policies-section{padding:50px 0}
+ .policies-grid{grid-template-columns:1fr 1fr;gap:10px}
+ .policies-grid article{padding:14px}
+ .occasion-filter{align-items:stretch;flex-direction:column;gap:8px}
+ .occasion-filter select{width:100%}
+ .occasion-filter button{align-self:flex-start;padding-left:0}
+ .cart-items{padding:14px}
+ .cart-drawer{width:100%}
+ .cart-footer{padding-bottom:max(16px,env(safe-area-inset-bottom))}
+ .event-fields{grid-template-columns:1fr}
+ .variant-field input,.variant-field select,.variant-field textarea{font-size:16px}
+}
+@media(max-width:390px){.policies-grid{grid-template-columns:1fr}.product-modal .modal-media-panel .product-visual.large{max-height:235px}}
+
+/* Printyx V13: revisión de cotización y trabajos reales */
+.gallery-section{padding:72px 0 78px;scroll-margin-top:96px}
+.gallery-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.gallery-tile{display:flex;flex-direction:column;text-align:left;background:#fff;border:1px solid #e7e8e8;border-radius:15px;overflow:hidden;padding:0;cursor:zoom-in;transition:transform .2s,box-shadow .2s}
+.gallery-tile:hover{transform:translateY(-3px);box-shadow:0 10px 25px #14213d14}
+.gallery-tile img{display:block;width:100%;aspect-ratio:1;object-fit:cover;background:#f7f5f0}
+.gallery-tile span{font-size:12px;font-weight:700;color:#14213d;padding:13px 15px 15px;line-height:1.4}
+.gallery-note{color:#5b6478;font-size:12px;margin-top:18px}
+.gallery-lightbox{position:fixed;inset:0;z-index:1500;background:#14213de8;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:65px 20px 20px;gap:12px}
+.gallery-lightbox img{max-width:min(95vw,1050px);max-height:calc(100dvh - 145px);object-fit:contain;border-radius:10px}
+.gallery-lightbox p{color:#fff;font-weight:700;font-size:14px;text-align:center}
+.gallery-lightbox .gallery-close{position:absolute;right:25px;top:22px;background:#fff}
+.review-content h3{font-size:23px;color:#14213d;margin:10px 0}
+.review-content>p{color:#5b6478;font-size:13px;line-height:1.7}
+.review-item{padding:17px 0;border-bottom:1px solid #e5e9ed;font-size:13px;color:#14213d}
+.review-item-heading{display:flex;align-items:start;justify-content:space-between;gap:10px}
+.review-item-heading button{display:flex;align-items:center;gap:6px;border:0;background:#eaf8fb;border-radius:8px;color:#14213d;padding:8px 10px;font-weight:700;cursor:pointer}
+.review-item .review-variant{white-space:pre-wrap;overflow-wrap:anywhere;color:#5b6478;line-height:1.65;font-size:12px}
+.review-item>p:last-child{color:#5b6478}
+.review-explainer{display:flex;gap:11px;padding:16px 13px;background:#f0f9fb;border:1px solid #c9e8f1;border-radius:12px;margin:20px 0}
+.review-explainer svg{flex-shrink:0;color:#0086ac;margin-top:3px}
+.review-explainer p{font-size:12px;line-height:1.65;color:#14213d;margin:0}
+.review-buttons{display:grid;gap:8px}
+.review-buttons .primary-button{margin-top:0}
+@media(max-width:920px){.gallery-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:680px){.gallery-section{padding:48px 0}.gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.gallery-tile span{font-size:11px;padding:11px}.gallery-close{right:14px;top:12px}.review-content h3{font-size:21px}}
+@media(max-width:380px){.gallery-grid{grid-template-columns:1fr 1fr}}
