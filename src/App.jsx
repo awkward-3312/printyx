@@ -20,7 +20,10 @@ function App() {
   const [selected, setSelected] = useState(null);
   const [choices, setChoices] = useState({});
   const [details, setDetails] = useState({});
-  const [referenceNames, setReferenceNames] = useState([]);
+  const [referenceFiles, setReferenceFiles] = useState([]);
+  const [uploading, setUploading] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState('');
+  const [challengeVersion, setChallengeVersion] = useState(0);
   const [formError, setFormError] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [menuOpen,setMenuOpen] = useState(false);
@@ -31,20 +34,40 @@ function App() {
   const totalQty = cart.reduce((n,item)=>n+item.quantity,0);
   const fixedTotal = cart.reduce((n,item)=>n+(typeof item.price==='number'?item.price*item.quantity:0),0);
   const hasQuotes = cart.some(i=>typeof i.price!=='number');
-  function openProduct(p){setReferenceNames([]);setSelected(p);setChoices(Object.fromEntries(Object.entries(p.options||{}).map(([k,v])=>[k,v[0]])));setDetails(makeInitialDetails(p));setFormError('');setQuantity(1)}
-  function addToCart(){
-    if(!selected)return;
+  function openProduct(p){setReferenceFiles([]);setTurnstileToken('');setSelected(p);setChoices(Object.fromEntries(Object.entries(p.options||{}).map(([k,v])=>[k,v[0]])));setDetails(makeInitialDetails(p));setFormError('');setQuantity(1)}
+  async function addToCart(){
+    if(!selected || uploading)return;
     const error=validateDetails(selected,details);
     if(error){setFormError(error);return;}
-    const detailRows=[...Object.entries(choices),...getProductDetails(selected,details)];
-    if(referenceNames.length) detailRows.push(['Archivos para enviar por WhatsApp (NO adjuntos)',referenceNames.join(', ')]);
-    const variant=detailRows.map(([k,v])=>`${k}: ${v}`).join('\n');
-    const key=JSON.stringify([selected.id,detailRows]);
-    setCart(prev=>{const existing=prev.find(i=>i.key===key); return existing?prev.map(i=>i.key===key?{...i,quantity:i.quantity+quantity}:i):[...prev,{key,id:selected.id,name:selected.name,price:selected.price,emoji:selected.emoji,variant,quantity}]});
-    setSelected(null);setReferenceNames([]);setFormError('');setNotice('Producto agregado al carrito');setTimeout(()=>setNotice(''),2600);
+    if(referenceFiles.length && !turnstileToken){setFormError('Completa la verificación de seguridad para subir tus archivos.');return;}
+    setFormError(''); setUploading(true);
+    try {
+      let uploaded=[];
+      if(referenceFiles.length){
+        const form=new FormData();
+        for(const file of referenceFiles) form.append('files',file,file.name);
+        form.append('turnstileToken',turnstileToken);
+        const result=await fetch('/api/files',{method:'POST',body:form,cache:'no-store'});
+        const data=await result.json().catch(()=>({}));
+        if(!result.ok) throw new Error(data.error||'No pudimos subir los archivos. Inténtalo nuevamente.');
+        uploaded=data.files||[];
+        if(uploaded.length!==referenceFiles.length) throw new Error('No se confirmaron todos los archivos.');
+      }
+      const detailRows=[...Object.entries(choices),...getProductDetails(selected,details)];
+      if(uploaded.length) for(const file of uploaded) detailRows.push([`Archivo: ${file.name}`,file.url]);
+      const variant=detailRows.map(([k,v])=>`${k}: ${v}`).join('\n');
+      const key=JSON.stringify([selected.id,detailRows]);
+      setCart(prev=>{const existing=prev.find(i=>i.key===key); return existing?prev.map(i=>i.key===key?{...i,quantity:i.quantity+quantity}:i):[...prev,{key,id:selected.id,name:selected.name,price:selected.price,emoji:selected.emoji,variant,quantity,uploadedAt:uploaded.length?Date.now():null}]});
+      setSelected(null);setReferenceFiles([]);setTurnstileToken('');setFormError('');setNotice('Producto agregado al carrito');setTimeout(()=>setNotice(''),2600);
+    }catch(e){setFormError(e.message||'Ocurrió un error al subir los archivos.');setTurnstileToken('');setChallengeVersion(v=>v+1)}
+    finally{setUploading(false)}
   }
   function updateQuantity(key,delta){setCart(prev=>prev.map(i=>i.key===key?{...i,quantity:Math.max(1,i.quantity+delta)}:i))}
-  function messageText(){const referencesInCart=cart.some(i=>i.variant?.includes('Archivos para enviar por WhatsApp (NO adjuntos)'));const lines=cart.map((i,index)=>`${index+1}. *${i.name}*\n${i.variant?i.variant+'\n':''}Cantidad: ${i.quantity}\n${typeof i.price==='number'?'Subtotal: '+money(i.price*i.quantity):'Precio: por cotizar'}`);return `¡Hola, Printyx! Quisiera cotizar este pedido:\n\n${lines.join('\n\n')}\n\n${fixedTotal>0?`Subtotal de productos con precio fijo: ${money(fixedTotal)}\n`:''}${hasQuotes?'*Algunos productos requieren cotización.*\n':''}${referencesInCart?'*Importante:* Tengo archivos de referencia para este pedido y los enviaré manualmente en este chat después de este mensaje.\n':''}¿Me pueden confirmar disponibilidad, precio final y envío? ¡Gracias!`}
+  function messageText(){
+    const referencesInCart=cart.some(i=>i.uploadedAt);
+    const lines=cart.map((i,index)=>`${index+1}. *${i.name}*\n${i.variant?i.variant+'\n':''}Cantidad: ${i.quantity}\n${typeof i.price==='number'?'Subtotal: '+money(i.price*i.quantity):'Precio: por cotizar'}`);
+    return `¡Hola, Printyx! Quisiera cotizar este pedido:\n\n${lines.join('\n\n')}\n\n${fixedTotal>0?`Subtotal de productos con precio fijo: ${money(fixedTotal)}\n`:''}${hasQuotes?'*Algunos productos requieren cotización.*\n':''}${referencesInCart?'*Archivos:* Los enlaces son privados por posesión del enlace, funcionan hasta 30 días desde su carga. Descárguenlos antes de que venzan.\n':''}¿Me pueden confirmar disponibilidad, precio final y envío? ¡Gracias!`;
+  }
   function sendWhatsApp(){if(!cart.length)return; const digits=WHATSAPP_NUMBER.replace(/\D/g,'');if(!/^504\d{8}$/.test(digits)){setNotice('Configura primero tu número en src/config.js (504 + 8 dígitos).');return}window.open(`https://wa.me/${digits}?text=${encodeURIComponent(messageText())}`,'_blank','noopener,noreferrer')}
   function goCatalog(){document.getElementById('catalogo')?.scrollIntoView({behavior:'smooth'});setMenuOpen(false)}
   return <>
@@ -81,8 +104,8 @@ function App() {
     </main>
     <footer><div className="container footer-inner"><div><div className="footer-logo-text">PRINTYX<span>.</span></div><p>Creatividad que se convierte en algo tuyo. · San Pedro Sula, Honduras.</p></div><div className="footer-links"><a href="#catalogo">Catálogo</a><a href="#como-comprar">Cómo comprar</a><a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">Instagram</a></div><small>© {new Date().getFullYear()} Printyx. Todos los derechos reservados.</small></div></footer>
     {notice&&<div className="toast" role="status">{notice}</div>}
-    {selected&&<div className="overlay" onMouseDown={e=>{if(e.target===e.currentTarget)setSelected(null)}}><div className="modal product-modal" role="dialog" aria-modal="true" aria-label={selected.name}><button className="close-button" onClick={()=>setSelected(null)} aria-label="Cerrar"><X/></button><div className="modal-product-grid"><ProductImage product={selected} large/><div className="modal-details"><span className="product-category">{selected.category}</span><h2>{selected.name}</h2><p>{selected.description}</p><strong className="modal-price">{typeof selected.price==='number'?money(selected.price):'Precio a consultar'}</strong>{Object.entries(selected.options||{}).map(([label,values])=><label className="variant-field" key={label}><span>{label}</span><select value={choices[label]||values[0]} onChange={e=>setChoices({...choices,[label]:e.target.value})}>{values.map(v=><option key={v}>{v}</option>)}</select></label>)}<ProductCustomizationFields product={selected} details={details} onChange={setDetails} referenceNames={referenceNames} onReferenceNamesChange={setReferenceNames} />{formError&&<p className="field-error" role="alert">{formError}</p>}<div className="quantity-row"><span>Cantidad</span><div className="quantity-control"><button onClick={()=>setQuantity(q=>Math.max(1,q-1))} aria-label="Disminuir cantidad"><Minus size={16}/></button><span>{quantity}</span><button onClick={()=>setQuantity(q=>q+1)} aria-label="Aumentar cantidad"><Plus size={16}/></button></div></div><button className="primary-button full" onClick={addToCart}>Agregar al carrito <ShoppingBag size={18}/></button></div></div></div></div>}
-    {cartOpen&&<div className="overlay drawer-overlay" onMouseDown={e=>{if(e.target===e.currentTarget)setCartOpen(false)}}><aside className="cart-drawer" role="dialog" aria-modal="true" aria-label="Mi carrito"><div className="drawer-heading"><div><span className="eyebrow">TU SELECCIÓN</span><h2>Mi carrito <span>({totalQty})</span></h2></div><button className="close-button" onClick={()=>setCartOpen(false)} aria-label="Cerrar carrito"><X/></button></div><div className="cart-items">{cart.length===0?<div className="empty-cart"><ShoppingBag size={48}/><h3>Tu carrito está vacío</h3><p>Explora el catálogo y agrega tus productos favoritos.</p><button className="secondary-button" onClick={()=>{setCartOpen(false);goCatalog()}}>Ver productos</button></div>:cart.map(i=><div className="cart-item" key={i.key}><div className="cart-thumb">{i.emoji}</div><div className="cart-item-content"><strong>{i.name}</strong><small className="cart-variant">{i.variant||'Sin variantes'}</small><span className="cart-item-price">{typeof i.price==='number'?money(i.price*i.quantity):'Por cotizar'}</span><div className="quantity-control"><button aria-label="Quitar una unidad" onClick={()=>updateQuantity(i.key,-1)}><Minus size={14}/></button><span>{i.quantity}</span><button aria-label="Agregar una unidad" onClick={()=>updateQuantity(i.key,1)}><Plus size={14}/></button></div></div><button className="remove-button" aria-label={`Eliminar ${i.name}`} onClick={()=>setCart(prev=>prev.filter(item=>item.key!==i.key))}><Trash2 size={17}/></button></div>)}</div><div className="cart-footer">{cart.length>0&&<><div className="cart-subtotal"><span>Subtotal conocido</span><strong>{money(fixedTotal)}</strong></div>{hasQuotes&&<p>El precio final se confirma por WhatsApp. El subtotal no incluye productos por cotizar ni envío.</p>}</>}<button className="primary-button full" disabled={!cart.length} onClick={sendWhatsApp}><MessageCircle size={18}/> Enviar pedido por WhatsApp</button><p className="cart-disclaimer">No se realizan pagos en esta página. Los archivos seleccionados no se adjuntan automáticamente: envíalos manualmente en el chat de WhatsApp.</p></div></aside></div>}
+    {selected&&<div className="overlay" onMouseDown={e=>{if(e.target===e.currentTarget)setSelected(null)}}><div className="modal product-modal" role="dialog" aria-modal="true" aria-label={selected.name}><button className="close-button" onClick={()=>setSelected(null)} aria-label="Cerrar"><X/></button><div className="modal-product-grid"><ProductImage product={selected} large/><div className="modal-details"><span className="product-category">{selected.category}</span><h2>{selected.name}</h2><p>{selected.description}</p><strong className="modal-price">{typeof selected.price==='number'?money(selected.price):'Precio a consultar'}</strong>{Object.entries(selected.options||{}).map(([label,values])=><label className="variant-field" key={label}><span>{label}</span><select value={choices[label]||values[0]} onChange={e=>setChoices({...choices,[label]:e.target.value})}>{values.map(v=><option key={v}>{v}</option>)}</select></label>)}<ProductCustomizationFields product={selected} details={details} onChange={setDetails} referenceFiles={referenceFiles} onReferenceFilesChange={setReferenceFiles} turnstileToken={turnstileToken} onTurnstileTokenChange={setTurnstileToken} challengeVersion={challengeVersion} />{formError&&<p className="field-error" role="alert">{formError}</p>}<div className="quantity-row"><span>Cantidad</span><div className="quantity-control"><button onClick={()=>setQuantity(q=>Math.max(1,q-1))} aria-label="Disminuir cantidad"><Minus size={16}/></button><span>{quantity}</span><button onClick={()=>setQuantity(q=>q+1)} aria-label="Aumentar cantidad"><Plus size={16}/></button></div></div><button className="primary-button full" onClick={addToCart} disabled={uploading}>{uploading?'Subiendo archivos…':'Agregar al carrito'} <ShoppingBag size={18}/></button></div></div></div></div>}
+    {cartOpen&&<div className="overlay drawer-overlay" onMouseDown={e=>{if(e.target===e.currentTarget)setCartOpen(false)}}><aside className="cart-drawer" role="dialog" aria-modal="true" aria-label="Mi carrito"><div className="drawer-heading"><div><span className="eyebrow">TU SELECCIÓN</span><h2>Mi carrito <span>({totalQty})</span></h2></div><button className="close-button" onClick={()=>setCartOpen(false)} aria-label="Cerrar carrito"><X/></button></div><div className="cart-items">{cart.length===0?<div className="empty-cart"><ShoppingBag size={48}/><h3>Tu carrito está vacío</h3><p>Explora el catálogo y agrega tus productos favoritos.</p><button className="secondary-button" onClick={()=>{setCartOpen(false);goCatalog()}}>Ver productos</button></div>:cart.map(i=><div className="cart-item" key={i.key}><div className="cart-thumb">{i.emoji}</div><div className="cart-item-content"><strong>{i.name}</strong><small className="cart-variant">{i.variant||'Sin variantes'}</small><span className="cart-item-price">{typeof i.price==='number'?money(i.price*i.quantity):'Por cotizar'}</span><div className="quantity-control"><button aria-label="Quitar una unidad" onClick={()=>updateQuantity(i.key,-1)}><Minus size={14}/></button><span>{i.quantity}</span><button aria-label="Agregar una unidad" onClick={()=>updateQuantity(i.key,1)}><Plus size={14}/></button></div></div><button className="remove-button" aria-label={`Eliminar ${i.name}`} onClick={()=>setCart(prev=>prev.filter(item=>item.key!==i.key))}><Trash2 size={17}/></button></div>)}</div><div className="cart-footer">{cart.length>0&&<><div className="cart-subtotal"><span>Subtotal conocido</span><strong>{money(fixedTotal)}</strong></div>{hasQuotes&&<p>El precio final se confirma por WhatsApp. El subtotal no incluye productos por cotizar ni envío.</p>}</>}<button className="primary-button full" disabled={!cart.length} onClick={sendWhatsApp}><MessageCircle size={18}/> Enviar pedido por WhatsApp</button><p className="cart-disclaimer">No se realizan pagos en esta página. Los archivos de diseño cargados en el pedido se comparten por enlaces privados. Se eliminan al cumplir 30 días.</p></div></aside></div>}
   </>;
 }
 export default App;
