@@ -1,0 +1,29 @@
+PRINTYX — CATÁLOGO WEB (VERSIÓN INICIAL)
+=======================================
+1) Haz una copia de seguridad de tu carpeta existente.
+2) Copia el CONTENIDO de este ZIP a tu proyecto GitHub local:
+   /Users/betzabe/Documents/GitHub/printyx
+   Reemplaza archivos cuando te lo solicite. NO borres la carpeta .git.
+3) Abre Terminal dentro del proyecto y ejecuta:
+   npm install
+   npm run dev
+4) Abre la URL local que muestre Vite. Prueba búsqueda, categorías y carrito.
+5) Abre src/config.js y configura WHATSAPP_NUMBER con 504 + 8 dígitos.
+   Si está vacío, el botón no enviará mensajes y te recordará configurarlo.
+6) Edita src/products.js: los productos incluidos son DEMOSTRACIÓN,
+   todos tienen precios por cotizar, no son precios reales.
+   Para fotos reales guarda archivos en public/productos y coloca la ruta
+   en cada producto, por ejemplo '/productos/camisa.webp'.
+7) Verifica que npm run build termine sin errores.
+8) Publica desde tu carpeta conectada a GitHub:
+   git add .
+   git commit -m "Crear catálogo inicial de Printyx"
+   git push origin main
+9) Cloudflare Pages debe compilar con:
+   Build command: npm run build
+   Build output directory: dist
+
+NO INCLUYE: checkout, pago en línea, cuentas, almacenamiento de pedidos,
+base de datos, subida de diseños por cliente. El carrito se guarda en
+localStorage del navegador y prepara el mensaje para WhatsApp.
+Las fotos de productos son reemplazadas por emojis de demostración.
